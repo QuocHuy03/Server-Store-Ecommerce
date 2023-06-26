@@ -3,6 +3,7 @@ const router = express.Router();
 
 const categoryController = require("../controllers/category.controller");
 const authController = require("../controllers/auth.controller");
+const uploadModule = require("../modules/upload");
 
 router.get("/", (req, res, next) => {
   res.send("Bé Họt Lu");
@@ -16,6 +17,8 @@ router.get("/getCategoryBySlug/:slug", categoryController.getCategoryBySlug);
 
 router.put("/updateCategory/:id", categoryController.updateCategory);
 router.delete("/deleteCategory/:id", categoryController.deleteCategoryById);
+
+
 
 // router.post("/register", authController.register);
 // router.post("/login", authController.login);
