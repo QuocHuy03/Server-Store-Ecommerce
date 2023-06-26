@@ -43,8 +43,13 @@ const categoryModel = {
   createCategory: async (cateData) => {
     try {
       const [result] = await connect.execute(
-        "INSERT INTO categories (`nameCategory`,`slugCategory`) VALUES (?,?)",
-        [cateData.nameCategory, slugify(cateData.nameCategory, { lower: true })]
+        "INSERT INTO categories (`nameCategory`,`slugCategory`,`outstandingCategory`,`statusCategory`) VALUES (?,?,?,?)",
+        [
+          cateData.nameCategory,
+          slugify(cateData.nameCategory, { lower: true }),
+          cateData.outstandingCategory,
+          cateData.statusCategory,
+        ]
       );
       const [newCategory] = await connect.execute(
         "SELECT * FROM categories WHERE id = ?",
@@ -71,34 +76,39 @@ const categoryModel = {
     }
   },
 
-  updateCategory: async (cateId, data) => {
+  updateCategory: async (slug, data) => {
     try {
       const [existingCategory] = await connect.execute(
-        "SELECT * FROM categories WHERE id = ?",
-        [cateId]
+        "SELECT * FROM categories WHERE slugCategory = ?",
+        [slug]
       );
-      
+
       if (existingCategory.length === 0) {
         throw new Error("Category not found");
       }
-      
+
       await connect.execute(
-        "UPDATE `categories` SET `nameCategory` = ?, `slugCategory` = ? WHERE id = ?",
-        [data.nameCategory, slugify(data.nameCategory, { lower: true }), cateId]
+        "UPDATE `categories` SET `nameCategory` = ?, `slugCategory` = ? , `outstandingCategory` = ? ,`statusCategory` = ? WHERE slugCategory = ?",
+        [
+          data.nameCategory,
+          slugify(data.nameCategory, { lower: true }),
+          data.outstandingCategory,
+          data.statusCategory,
+          slug,
+        ]
       );
-  
+
       const [updatedCategory] = await connect.execute(
-        "SELECT * FROM categories WHERE id = ?",
-        [cateId]
+        "SELECT * FROM categories WHERE slugCategory = ?",
+        [slug]
       );
-      
+
       return updatedCategory;
     } catch (error) {
       console.error("Lỗi trong quá trình truy vấn cơ sở dữ liệu:", error);
       throw error;
     }
   },
-  
 
   deleteCategory: async (cateId) => {
     try {
@@ -106,14 +116,13 @@ const categoryModel = {
         "SELECT * FROM categories WHERE id = ?",
         [cateId]
       );
-      
+
       if (existingCategory.length === 0) {
         throw new Error("Category not found");
       }
-      
+
       await connect.execute("DELETE FROM `categories` WHERE id = ?", [cateId]);
       return true;
-
     } catch (error) {
       console.error("Lỗi trong quá trình truy vấn cơ sở dữ liệu:", error);
       throw error;

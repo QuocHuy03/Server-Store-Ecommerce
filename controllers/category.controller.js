@@ -66,7 +66,7 @@ exports.addCategory = async (req, res, next) => {
 
 exports.updateCategory = (req, res, next) => {
   categoryModel
-    .updateCategory(req.params.id, req.body)
+    .updateCategory(req.params.slug, req.body.data)
     .then((data) => {
       return res
         .status(200)

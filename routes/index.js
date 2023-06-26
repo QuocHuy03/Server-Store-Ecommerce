@@ -15,7 +15,7 @@ router.get("/getAllCategories", categoryController.listCategory);
 router.get("/getCategoryById/:id", categoryController.getCategoryById);
 router.get("/getCategoryBySlug/:slug", categoryController.getCategoryBySlug);
 
-router.put("/updateCategory/:id", categoryController.updateCategory);
+router.put("/updateCategory/:slug", categoryController.updateCategory);
 router.delete("/deleteCategory/:id", categoryController.deleteCategoryById);
 
 
