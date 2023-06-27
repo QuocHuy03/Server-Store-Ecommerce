@@ -18,11 +18,8 @@ router.get("/getCategoryBySlug/:slug", categoryController.getCategoryBySlug);
 router.put("/updateCategory/:slug", categoryController.updateCategory);
 router.delete("/deleteCategory/:id", categoryController.deleteCategoryById);
 
-
-
-// router.post("/register", authController.register);
-// router.post("/login", authController.login);
-// router.put("/updateUser", authController.updateUser);
-// router.post("/refresh", authController.refreshToken);
+router.post("/register", authController.register);
+router.post("/login", authController.login);
+router.get("/verifyAccessToken", authController.verifyAccessToken);
 
 module.exports = router;

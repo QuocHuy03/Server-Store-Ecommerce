@@ -1,14 +1,35 @@
 const categoryModel = require("../models/category.model");
 
 exports.listCategory = (req, res, next) => {
-  categoryModel
-    .getAllCategory()
-    .then((data) => {
-      res.status(200).json(data);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  if (req.query.page && req.query.limit) {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    categoryModel
+      .getAllCategory()
+      .then((data) => {
+        const paginatedData = data.slice(skip, skip + limit);
+        res.status(200).json({
+          totalItems: data.length,
+          totalPages: Math.ceil(data.length / limit),
+          currentPage: page,
+          itemsPerPage: limit,
+          data: paginatedData,
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  } else {
+    categoryModel
+      .getAllCategory()
+      .then((data) => {
+        res.status(200).json(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 };
 
 exports.getCategoryById = (req, res, next) => {
