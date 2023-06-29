@@ -45,6 +45,18 @@ router.delete(
   categoryController.deleteCategoryById
 );
 
+router.delete(
+  "/deleteCategoriesAll",
+  verifyAccessTokenMiddleware,
+  categoryController.deleteCategoryAll
+);
+
+router.delete(
+  "/deleteCategoriesByIds",
+  verifyAccessTokenMiddleware,
+  categoryController.deleteCategoriesByIds
+);
+
 router.post("/register", authController.register);
 router.post("/login", authController.login);
 router.get("/verifyAccessToken", authController.verifyAccessToken);

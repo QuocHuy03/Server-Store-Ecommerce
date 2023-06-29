@@ -116,3 +116,37 @@ exports.deleteCategoryById = (req, res, next) => {
         .json({ status: false, message: "Delete Danh Mục Thất Bại" });
     });
 };
+
+exports.deleteCategoryAll = (req, res, next) => {
+  categoryModel
+    .deleteAllCategory(req.params.id)
+    .then((data) => {
+      return res
+        .status(200)
+        .json({ status: true, message: "Delete Danh Mục Thành Công" });
+    })
+    .catch((error) => {
+      console.error(error);
+      return res
+        .status(500)
+        .json({ status: false, message: "Delete Danh Mục Thất Bại" });
+    });
+};
+
+exports.deleteCategoriesByIds = (req, res, next) => {
+  // console.log(req.body.id.data);
+  const categoryIds = req.body.id.data;
+  categoryModel
+    .deleteCategoriesByIds(categoryIds)
+    .then((data) => {
+      return res
+        .status(200)
+        .json({ status: true, message: "Delete Danh Mục Thành Công" });
+    })
+    .catch((error) => {
+      console.error(error);
+      return res
+        .status(500)
+        .json({ status: false, message: "Delete Danh Mục Thất Bại" });
+    });
+};

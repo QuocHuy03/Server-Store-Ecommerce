@@ -128,6 +128,28 @@ const categoryModel = {
       throw error;
     }
   },
+
+  deleteAllCategory: async () => {
+    try {
+      const [data] = await connect.execute("DELETE FROM categories");
+      return data;
+    } catch (error) {
+      console.error("Lỗi trong quá trình truy vấn cơ sở dữ liệu:", error);
+      throw error;
+    }
+  },
+
+  deleteCategoriesByIds: async (categoryIds) => {
+    try {
+      const joinedIds = categoryIds.join(", "); // Kết hợp các ID thành một chuỗi được phân tách bằng dấu phẩy
+      const query = `DELETE FROM categories WHERE id IN (${joinedIds})`;
+      const [data] = await connect.execute(query);
+      return data;
+    } catch (error) {
+      console.error("Lỗi trong quá trình truy vấn cơ sở dữ liệu:", error);
+      throw error;
+    }
+  },
 };
 
 module.exports = categoryModel;
