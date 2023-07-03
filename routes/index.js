@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const categoryController = require("../controllers/category.controller");
+const productController = require("../controllers/product.controller");
 const authController = require("../controllers/auth.controller");
 const uploadModule = require("../modules/upload");
 const {
@@ -17,6 +18,8 @@ router.post(
   verifyAccessTokenMiddleware,
   categoryController.addCategory
 );
+
+// Category
 
 router.get(
   "/getAllCategories",
@@ -55,6 +58,47 @@ router.delete(
   "/deleteCategoriesByIds",
   verifyAccessTokenMiddleware,
   categoryController.deleteCategoriesByIds
+);
+
+// Product
+
+router.get(
+  "/getAllProducts",
+  verifyAccessTokenMiddleware,
+  productController.listProduct
+);
+router.get(
+  "/getProductById/:id",
+  verifyAccessTokenMiddleware,
+  productController.getProductById
+);
+router.get(
+  "/getProductBySlug/:slug",
+  verifyAccessTokenMiddleware,
+  productController.getProductBySlug
+);
+
+router.put(
+  "/updateProduct/:slug",
+  verifyAccessTokenMiddleware,
+  productController.updateProduct
+);
+router.delete(
+  "/deleteProduct/:id",
+  verifyAccessTokenMiddleware,
+  productController.deleteProductById
+);
+
+router.delete(
+  "/deleteProductsAll",
+  verifyAccessTokenMiddleware,
+  productController.deleteProductAll
+);
+
+router.delete(
+  "/deleteProductsByIds",
+  verifyAccessTokenMiddleware,
+  productController.deleteProductsByIds
 );
 
 router.post("/register", authController.register);

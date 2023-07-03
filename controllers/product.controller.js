@@ -1,12 +1,12 @@
-const categoryModel = require("../models/category.model");
+const productModel = require("../models/product.model");
 
-exports.listCategory = (req, res, next) => {
+exports.listProduct = (req, res, next) => {
   if (req.query.page && req.query.limit) {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
-    categoryModel
-      .getAllCategory()
+    productModel
+      .getAllProduct()
       .then((data) => {
         const paginatedData = data.slice(skip, skip + limit);
         res.status(200).json({
@@ -21,7 +21,7 @@ exports.listCategory = (req, res, next) => {
         console.error(error);
       });
   } else {
-    categoryModel
+    productModel
       .getAllCategory()
       .then((data) => {
         res.status(200).json(data);
@@ -32,10 +32,10 @@ exports.listCategory = (req, res, next) => {
   }
 };
 
-exports.getCategoryById = (req, res, next) => {
-  const cateID = req.params.id;
-  categoryModel
-    .getCategoryById(cateID)
+exports.getProductById = (req, res, next) => {
+  const id = req.params.id;
+  productModel
+    .getProductById(id)
     .then((cate) => {
       res.status(200).json(cate);
     })
@@ -44,10 +44,10 @@ exports.getCategoryById = (req, res, next) => {
     });
 };
 
-exports.getCategoryBySlug = (req, res, next) => {
-  const cateSlug = req.params.slug;
-  categoryModel
-    .getCategoryBySlug(cateSlug)
+exports.getProductBySlug = (req, res, next) => {
+  const slug = req.params.slug;
+  productModel
+    .getProductBySlug(slug)
     .then((cate) => {
       res.status(200).json(cate);
     })
@@ -56,24 +56,24 @@ exports.getCategoryBySlug = (req, res, next) => {
     });
 };
 
-exports.addCategory = async (req, res, next) => {
+exports.addProduct = async (req, res, next) => {
   try {
-    const existingCategory = await categoryModel.checkDuplicateCategory(
-      req.body.nameCategory
+    const existingProduct = await productModel.checkDuplicateProduct(
+      req.body.nameProduct
     );
 
-    if (existingCategory) {
+    if (existingProduct) {
       return res
         .status(200)
-        .json({ status: false, message: "Danh mục đã tồn tại!" });
+        .json({ status: false, message: "Sản phẩm đã tồn tại!" });
     }
 
-    const result = await categoryModel.createCategory(req.body);
+    const result = await productModel.createProduct(req.body);
 
     if (result) {
       return res
         .status(200)
-        .json({ status: true, message: "Thêm danh mục thành công!", result });
+        .json({ status: true, message: "Thêm sản phẩm thành công!", result });
     } else {
       next();
     }
@@ -81,72 +81,71 @@ exports.addCategory = async (req, res, next) => {
     console.error(error);
     return res
       .status(500)
-      .json({ status: false, message: "Lỗi trong quá trình thêm danh mục!" });
+      .json({ status: false, message: "Lỗi trong quá trình thêm sản phẩm!" });
   }
 };
 
-exports.updateCategory = (req, res, next) => {
-  categoryModel
-    .updateCategory(req.params.slug, req.body.data)
+exports.updateProduct = (req, res, next) => {
+  productModel
+    .updateProduct(req.params.slug, req.body.data)
     .then((data) => {
       return res
         .status(200)
-        .json({ status: true, message: "Update Danh Mục Thành Công", data });
+        .json({ status: true, message: "Update Sản Phẩm Thành Công", data });
     })
     .catch((error) => {
       console.error(error);
       return res
         .status(500)
-        .json({ status: false, message: "Update Danh Mục Thất Bại" });
+        .json({ status: false, message: "Update Sản Phẩm Thất Bại" });
     });
 };
 
-exports.deleteCategoryById = (req, res, next) => {
-  categoryModel
-    .deleteCategory(req.params.id)
+exports.deleteProductById = (req, res, next) => {
+  productModel
+    .deleteProduct(req.params.id)
     .then((data) => {
       return res
         .status(200)
-        .json({ status: true, message: "Delete Danh Mục Thành Công" });
+        .json({ status: true, message: "Delete Sản Phẩm Thành Công" });
     })
     .catch((error) => {
       console.error(error);
       return res
         .status(500)
-        .json({ status: false, message: "Delete Danh Mục Thất Bại" });
+        .json({ status: false, message: "Delete Sản Phẩm Thất Bại" });
     });
 };
 
-exports.deleteCategoryAll = (req, res, next) => {
-  categoryModel
-    .deleteAllCategory(req.params.id)
+exports.deleteProductAll = (req, res, next) => {
+  productModel
+    .deleteAllProduct(req.params.id)
     .then((data) => {
       return res
         .status(200)
-        .json({ status: true, message: "Delete Danh Mục Thành Công" });
+        .json({ status: true, message: "Delete Sản Phẩm Thành Công" });
     })
     .catch((error) => {
       console.error(error);
       return res
         .status(500)
-        .json({ status: false, message: "Delete Danh Mục Thất Bại" });
+        .json({ status: false, message: "Delete Sản Phẩm Thất Bại" });
     });
 };
 
-exports.deleteCategoriesByIds = (req, res, next) => {
-  // console.log(req.body.id.data);
-  const categoryIds = req.body.id.data;
-  categoryModel
-    .deleteCategoriesByIds(categoryIds)
+exports.deleteProductsByIds = (req, res, next) => {
+  const productIds = req.body.id.data;
+  productModel
+    .deleteProductsByIds(productIds)
     .then((data) => {
       return res
         .status(200)
-        .json({ status: true, message: "Delete Danh Mục Thành Công" });
+        .json({ status: true, message: "Delete Sản Phẩm Thành Công" });
     })
     .catch((error) => {
       console.error(error);
       return res
         .status(500)
-        .json({ status: false, message: "Delete Danh Mục Thất Bại" });
+        .json({ status: false, message: "Delete Sản Phẩm Thất Bại" });
     });
 };
