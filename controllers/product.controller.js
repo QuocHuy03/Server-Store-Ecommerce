@@ -22,7 +22,7 @@ exports.listProduct = (req, res, next) => {
       });
   } else {
     productModel
-      .getAllCategory()
+      .getAllProduct()
       .then((data) => {
         res.status(200).json(data);
       })
