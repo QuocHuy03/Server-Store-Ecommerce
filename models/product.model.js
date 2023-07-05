@@ -46,7 +46,6 @@ const productModel = {
   },
 
   createProduct: async (data) => {
-    console.log(data);
     try {
       const [result] = await connect.execute(
         "INSERT INTO products (`nameProduct`, `slugProduct`, `price_has_ropped`, `initial_price`, `categoryID`, `contentProduct`, `descriptionProduct`, `statusProduct`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
@@ -64,7 +63,7 @@ const productModel = {
 
       const productId = result.insertId;
 
-      // Insert images into the images table
+      // vòng qua từng image
       for (const imagePath of data.imageProducts) {
         await connect.execute(
           "INSERT INTO images (`product_id`, `image_path`) VALUES (?, ?)",
@@ -145,6 +144,7 @@ const productModel = {
       if (existingProduct.length === 0) {
         throw new Error("Product not found");
       }
+      await connect.execute("DELETE FROM `images` WHERE product_id = ?", [id]);
 
       await connect.execute("DELETE FROM `products` WHERE id = ?", [id]);
       return true;
@@ -156,6 +156,9 @@ const productModel = {
 
   deleteAllProduct: async () => {
     try {
+      await connect.execute(
+        "DELETE images FROM images JOIN products ON images.product_id = products.id"
+      );
       const [data] = await connect.execute("DELETE FROM products");
       return data;
     } catch (error) {
@@ -166,9 +169,16 @@ const productModel = {
 
   deleteProductsByIds: async (products) => {
     try {
-      const joinedIds = products.join(", "); // Kết hợp các ID thành một chuỗi được phân tách bằng dấu phẩy
+      const joinedIds = products.join(", ");
+
+      await connect.execute(
+        "DELETE FROM images WHERE product_id IN (SELECT id FROM products WHERE id = ?)",
+        products
+      );
+
       const query = `DELETE FROM products WHERE id IN (${joinedIds})`;
       const [data] = await connect.execute(query);
+
       return data;
     } catch (error) {
       console.error("Lỗi trong quá trình truy vấn cơ sở dữ liệu:", error);

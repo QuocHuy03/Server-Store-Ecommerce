@@ -119,7 +119,7 @@ exports.deleteCategoryById = (req, res, next) => {
 
 exports.deleteCategoryAll = (req, res, next) => {
   categoryModel
-    .deleteAllCategory(req.params.id)
+    .deleteAllCategory()
     .then((data) => {
       return res
         .status(200)

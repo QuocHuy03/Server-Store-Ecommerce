@@ -119,7 +119,7 @@ exports.deleteProductById = (req, res, next) => {
 
 exports.deleteProductAll = (req, res, next) => {
   productModel
-    .deleteAllProduct(req.params.id)
+    .deleteAllProduct()
     .then((data) => {
       return res
         .status(200)
