@@ -13,13 +13,13 @@ router.get("/", (req, res, next) => {
   res.send("Bé Họt Lu");
 });
 
+
+// Category
 router.post(
   "/addCategory",
   verifyAccessTokenMiddleware,
   categoryController.addCategory
 );
-
-// Category
 
 router.get(
   "/getAllCategories",

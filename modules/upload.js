@@ -25,16 +25,20 @@ const storage = new CloudinaryStorage({
 
 const uploadCloud = multer({ storage });
 
-router.post("/", uploadCloud.single("file"), async (req, res, next) => {
+router.post("/", uploadCloud.array("file[]"), async (req, res, next) => {
   try {
-    if (!req.file) {
-      throw new Error("No file uploaded!");
+    if (!req.files || req.files.length === 0) {
+      throw new Error("No files uploaded!");
     }
 
-    const result = await cloudinary.uploader.upload(req.file.path);
-    const imageUrl = result.secure_url;
+    const results = await Promise.all(
+      req.files.map(async (file) => {
+        const result = await cloudinary.uploader.upload(file.path);
+        return result.secure_url;
+      })
+    );
 
-    res.json({ secure_url: imageUrl });
+    res.json({ secure_urls: results });
   } catch (err) {
     next(err);
   }
