@@ -4,21 +4,26 @@ const slugify = require("slugify");
 const productModel = {
   getAllProduct: async () => {
     try {
-      const [data] = await connect.execute(
-        "SELECT * FROM `products` ORDER BY id DESC"
+      const [productData] = await connect.execute(
+        "SELECT p.id, p.nameProduct, p.slugProduct, p.price_has_ropped, p.categoryID, p.initial_price, p.contentProduct, p.descriptionProduct, p.statusProduct, p.createAt, p.updatedAt, GROUP_CONCAT(i.image_path) AS imagePaths, c.nameCategory\n" +
+          "FROM products AS p\n" +
+          "LEFT JOIN images AS i ON p.id = i.product_id\n" +
+          "LEFT JOIN categories AS c ON p.categoryID = c.id\n" +
+          "GROUP BY p.id"
       );
-      return data;
+
+      return productData;
     } catch (error) {
       console.error("Lỗi trong quá trình truy vấn cơ sở dữ liệu:", error);
       throw error;
     }
   },
 
-  getProductById: async (cateId) => {
+  getProductById: async (productId) => {
     try {
       const [data] = await connect.execute(
         "SELECT * FROM `products` WHERE id = ?",
-        [cateId]
+        [productId]
       );
       return data[0];
     } catch (error) {
@@ -41,6 +46,7 @@ const productModel = {
   },
 
   createProduct: async (data) => {
+    console.log(data);
     try {
       const [result] = await connect.execute(
         "INSERT INTO products (`nameProduct`, `slugProduct`, `price_has_ropped`, `initial_price`, `categoryID`, `contentProduct`, `descriptionProduct`, `statusProduct`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",

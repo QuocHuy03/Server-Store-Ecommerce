@@ -62,6 +62,12 @@ router.delete(
 
 // Product
 
+router.post(
+  "/addProduct",
+  verifyAccessTokenMiddleware,
+  productController.addProduct
+);
+
 router.get(
   "/getAllProducts",
   verifyAccessTokenMiddleware,
