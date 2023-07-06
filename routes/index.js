@@ -4,6 +4,7 @@ const router = express.Router();
 const categoryController = require("../controllers/category.controller");
 const productController = require("../controllers/product.controller");
 const orderController = require("../controllers/order.controller");
+const userController = require("../controllers/user.controller");
 const authController = require("../controllers/auth.controller");
 const uploadModule = require("../modules/upload");
 const {
@@ -143,5 +144,24 @@ router.delete(
 router.post("/register", authController.register);
 router.post("/login", authController.login);
 router.get("/verifyAccessToken", authController.verifyAccessToken);
+
+// user
+
+router.get(
+  "/getAllUsers",
+  verifyAccessTokenMiddleware,
+  userController.listUsers
+);
+router.get(
+  "/getUserById/:id",
+  verifyAccessTokenMiddleware,
+  userController.getUserById
+);
+
+router.put(
+  "/updateUser/:id",
+  verifyAccessTokenMiddleware,
+  userController.updateUser
+);
 
 module.exports = router;
