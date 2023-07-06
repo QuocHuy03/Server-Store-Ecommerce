@@ -3,6 +3,7 @@ const router = express.Router();
 
 const categoryController = require("../controllers/category.controller");
 const productController = require("../controllers/product.controller");
+const orderController = require("../controllers/order.controller");
 const authController = require("../controllers/auth.controller");
 const uploadModule = require("../modules/upload");
 const {
@@ -12,7 +13,6 @@ const {
 router.get("/", (req, res, next) => {
   res.send("Bé Họt Lu");
 });
-
 
 // Category
 router.post(
@@ -106,6 +106,39 @@ router.delete(
   verifyAccessTokenMiddleware,
   productController.deleteProductsByIds
 );
+
+// Order
+
+router.post(
+  "/postOrder",
+  verifyAccessTokenMiddleware,
+  orderController.postOrder
+);
+
+router.get(
+  "/getAllOrders",
+  verifyAccessTokenMiddleware,
+  orderController.listOrder
+);
+router.get(
+  "/getOrderById/:id",
+  verifyAccessTokenMiddleware,
+  orderController.getOrderById
+);
+
+router.put(
+  "/updateStatus/:slug",
+  verifyAccessTokenMiddleware,
+  orderController.updateStatus
+);
+
+router.delete(
+  "/deleteProduct/:id",
+  verifyAccessTokenMiddleware,
+  orderController.deleteOrderById
+);
+
+// Auth
 
 router.post("/register", authController.register);
 router.post("/login", authController.login);
