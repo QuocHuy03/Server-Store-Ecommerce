@@ -5,6 +5,7 @@ const categoryController = require("../controllers/category.controller");
 const productController = require("../controllers/product.controller");
 const orderController = require("../controllers/order.controller");
 const userController = require("../controllers/user.controller");
+const colorController = require("../controllers/color.controller");
 const authController = require("../controllers/auth.controller");
 const uploadModule = require("../modules/upload");
 const {
@@ -59,6 +60,44 @@ router.delete(
   "/deleteCategoriesByIds",
   verifyAccessTokenMiddleware,
   categoryController.deleteCategoriesByIds
+);
+
+// Color
+
+router.post("/addColor", verifyAccessTokenMiddleware, colorController.addColor);
+
+router.get(
+  "/getAllColors",
+  verifyAccessTokenMiddleware,
+  colorController.listColor
+);
+router.get(
+  "/getColorById/:id",
+  verifyAccessTokenMiddleware,
+  colorController.getColorById
+);
+
+router.put(
+  "/updateColor/:id",
+  verifyAccessTokenMiddleware,
+  colorController.updateColor
+);
+router.delete(
+  "/deleteColor/:id",
+  verifyAccessTokenMiddleware,
+  colorController.deleteColorById
+);
+
+router.delete(
+  "/deleteColorsAll",
+  verifyAccessTokenMiddleware,
+  colorController.deleteColorAll
+);
+
+router.delete(
+  "/deleteColorsByIds",
+  verifyAccessTokenMiddleware,
+  colorController.deleteColorById
 );
 
 // Product

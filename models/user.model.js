@@ -64,13 +64,8 @@ const userModel = {
       }
 
       await connect.execute(
-        "UPDATE `users` SET `email` = ?, `fullname` = ? , `username` = ? ,`phone` = ?, `address` = ?, `role` = ? WHERE id = ?",
+        "UPDATE `users` SET `role` = ? WHERE id = ?",
         [
-          data.email,
-          data.fullname,
-          data.username,
-          data.phone,
-          data.address,
           data.role,
           id,
         ]

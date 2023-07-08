@@ -5,11 +5,7 @@ const productModel = {
   getAllProduct: async () => {
     try {
       const [productData] = await connect.execute(
-        "SELECT p.id, p.nameProduct, p.slugProduct, p.price_has_ropped, p.categoryID, p.initial_price, p.contentProduct, p.descriptionProduct, p.statusProduct, p.createAt, p.updatedAt, GROUP_CONCAT(i.image_path) AS imagePaths, c.nameCategory\n" +
-          "FROM products AS p\n" +
-          "LEFT JOIN images AS i ON p.id = i.product_id\n" +
-          "LEFT JOIN categories AS c ON p.categoryID = c.id\n" +
-          "GROUP BY p.id"
+        "SELECT p.id, p.nameProduct, p.slugProduct, p.price_has_ropped, p.categoryID, p.initial_price, p.contentProduct,p.descriptionProduct, p.statusProduct, p.createAt, p.updatedAt, GROUP_CONCAT(DISTINCT i.image_path) AS imagePaths, GROUP_CONCAT(DISTINCT pc.nameColor) AS nameColors, cat.nameCategory FROM products AS p LEFT JOIN images AS i ON p.id = i.product_image_id LEFT JOIN colors AS pc ON p.id = pc.product_color_id LEFT JOIN categories AS cat ON p.categoryID = cat.id GROUP BY p.id"
       );
 
       return productData;
@@ -35,7 +31,7 @@ const productModel = {
   getProductBySlug: async (data) => {
     try {
       const [result] = await connect.execute(
-        "SELECT * FROM `products` WHERE slugProduct = ?",
+        "SELECT p.id, p.nameProduct, p.slugProduct, p.price_has_ropped, p.categoryID, p.initial_price, p.contentProduct, p.descriptionProduct, p.statusProduct, p.createAt, p.updatedAt, GROUP_CONCAT(DISTINCT i.image_path) AS imagePaths, GROUP_CONCAT(DISTINCT pc.nameColor) AS nameColors, cat.nameCategory FROM products AS p LEFT JOIN images AS i ON p.id = i.product_image_id LEFT JOIN colors AS pc ON p.id = pc.product_color_id LEFT JOIN categories AS cat ON p.categoryID = cat.id WHERE p.slugProduct = ? GROUP BY p.id",
         [data]
       );
       return result[0];
@@ -66,8 +62,15 @@ const productModel = {
       // vòng qua từng image
       for (const imagePath of data.imageProducts) {
         await connect.execute(
-          "INSERT INTO images (`product_id`, `image_path`) VALUES (?, ?)",
+          "INSERT INTO images (`product_image_id`, `image_path`) VALUES (?, ?)",
           [productId, imagePath]
+        );
+      }
+
+      for (const colors of data.nameColors) {
+        await connect.execute(
+          "INSERT INTO colors (`product_color_id`, `nameColor`) VALUES (?, ?)",
+          [productId, colors]
         );
       }
 
@@ -78,7 +81,10 @@ const productModel = {
 
       return newProduct;
     } catch (error) {
-      console.error("Lỗi trong quá trình truy vấn cơ sở dữ liệu:", error);
+      console.error(
+        "Lỗi trong quá trình truy vấn cơ sở dữ liệu product:",
+        error
+      );
       throw error;
     }
   },
