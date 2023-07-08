@@ -102,7 +102,7 @@ const productModel = {
     }
   },
 
-  updateProduct: async (slug, data) => {
+  updateProduct: async (slug, isEdit, data) => {
     try {
       const [existingProduct] = await connect.execute(
         "SELECT * FROM products WHERE slugProduct = ?",
@@ -127,6 +127,37 @@ const productModel = {
           slug,
         ]
       );
+    
+      // Cập nhật ảnh
+      if (!isEdit) {
+        // Xóa các ảnh cũ của sản phẩm
+        await connect.execute(
+          "DELETE FROM images WHERE `product_image_id` = ?",
+          [existingProduct[0].id]
+        );
+
+        // Thêm ảnh mới vào sản phẩm
+        for (const imagePath of data.imageProducts) {
+          await connect.execute(
+            "INSERT INTO images (`product_image_id`, `image_path`) VALUES (?, ?)",
+            [existingProduct[0].id, imagePath]
+          );
+        }
+      }
+
+      // Cập nhật màu sắc
+      // Xóa các màu sắc cũ của sản phẩm
+      await connect.execute("DELETE FROM colors WHERE `product_color_id` = ?", [
+        existingProduct[0].id,
+      ]);
+
+      // Thêm màu sắc mới vào sản phẩm
+      for (const color of data.nameColors) {
+        await connect.execute(
+          "INSERT INTO colors (`product_color_id`, `nameColor`) VALUES (?, ?)",
+          [existingProduct[0].id, color]
+        );
+      }
 
       const [updatedProduct] = await connect.execute(
         "SELECT * FROM products WHERE slugProduct = ?",
@@ -135,6 +166,7 @@ const productModel = {
 
       return updatedProduct;
     } catch (error) {
+      
       console.error("Lỗi trong quá trình truy vấn cơ sở dữ liệu:", error);
       throw error;
     }

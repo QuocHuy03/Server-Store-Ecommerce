@@ -87,7 +87,7 @@ exports.addProduct = async (req, res, next) => {
 
 exports.updateProduct = (req, res, next) => {
   productModel
-    .updateProduct(req.params.slug, req.body.data)
+    .updateProduct(req.params.slug, req.query.isEdit, req.body.data)
     .then((data) => {
       return res
         .status(200)
