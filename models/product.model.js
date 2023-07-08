@@ -127,9 +127,9 @@ const productModel = {
           slug,
         ]
       );
-    
+      // console.log(isEdit); // false
       // Cập nhật ảnh
-      if (!isEdit) {
+      if (isEdit === "false") {
         // Xóa các ảnh cũ của sản phẩm
         await connect.execute(
           "DELETE FROM images WHERE `product_image_id` = ?",
@@ -166,7 +166,6 @@ const productModel = {
 
       return updatedProduct;
     } catch (error) {
-      
       console.error("Lỗi trong quá trình truy vấn cơ sở dữ liệu:", error);
       throw error;
     }
