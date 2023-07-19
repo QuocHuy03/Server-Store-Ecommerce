@@ -118,6 +118,12 @@ router.get(
   verifyAccessTokenMiddleware,
   productController.getProductById
 );
+
+router.get(
+  "/getProductOfCategory/:id",
+  verifyAccessTokenMiddleware,
+  productController.getProductOfCategory
+);
 router.get(
   "/getProductBySlug/:slug",
   verifyAccessTokenMiddleware,

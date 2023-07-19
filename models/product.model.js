@@ -41,6 +41,19 @@ const productModel = {
     }
   },
 
+  getProductOfCategory: async (categoryID) => {
+    try {
+      const [results] = await connect.execute(
+        "SELECT p.id, p.nameProduct, p.slugProduct, p.price_has_ropped, p.categoryID, p.initial_price, p.contentProduct, p.descriptionProduct, p.statusProduct, p.createAt, p.updatedAt, GROUP_CONCAT(DISTINCT i.image_path) AS imagePaths, GROUP_CONCAT(DISTINCT pc.nameColor) AS nameColors, cat.nameCategory FROM products AS p LEFT JOIN images AS i ON p.id = i.product_image_id LEFT JOIN colors AS pc ON p.id = pc.product_color_id LEFT JOIN categories AS cat ON p.categoryID = cat.id WHERE p.categoryID = ? GROUP BY p.id",
+        [categoryID]
+      );
+      return results;
+    } catch (error) {
+      console.error("Lỗi trong quá trình truy vấn cơ sở dữ liệu:", error);
+      throw error;
+    }
+  },
+
   createProduct: async (data) => {
     try {
       const [result] = await connect.execute(

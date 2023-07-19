@@ -56,6 +56,17 @@ exports.getProductBySlug = (req, res, next) => {
     });
 };
 
+exports.getProductOfCategory = (req, res, next) => {
+  const id = req.params.id;
+  productModel
+    .getProductOfCategory(id)
+    .then((cate) => {
+      res.status(200).json(cate);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
 exports.addProduct = async (req, res, next) => {
   try {
     const existingProduct = await productModel.checkDuplicateProduct(
