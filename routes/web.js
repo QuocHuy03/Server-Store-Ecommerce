@@ -34,18 +34,15 @@ router.get("/getProductBySlug/:slug", productController.getProductBySlug);
 
 router.post(
   "/postOrder",
-  verifyAccessTokenMiddleware,
   orderController.postOrder
 );
 
 router.get(
   "/getAllOrders",
-  verifyAccessTokenMiddleware,
   orderController.listOrder
 );
 router.get(
   "/getOrderById/:id",
-  verifyAccessTokenMiddleware,
   orderController.getOrderById
 );
 
