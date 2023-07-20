@@ -14,13 +14,15 @@ app.use(
   })
 );
 
-const webRoutes = require("./routes/index");
+const adminRoutes = require("./routes/admin");
+const webRoutes = require("./routes/web");
 const uploadRoutes = require("./modules/upload");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use("/api", webRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/web", webRoutes);
 app.use("/api/uploadFile", uploadRoutes);
 
 app.listen(port, () => {
