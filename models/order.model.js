@@ -60,7 +60,7 @@ const orderModel = {
           existingData.city !== data.values.city ||
           existingData.district !== data.values.district ||
           existingData.commune !== data.values.commune;
-          existingData.address !== data.values.address;
+        existingData.address !== data.values.address;
 
         if (hasChanged) {
           const [updatedInformation] = await connect.execute(
@@ -74,8 +74,6 @@ const orderModel = {
               data.userID,
             ]
           );
-
-          console.log("Update successful.");
         } else {
           console.log("No changes to update.");
         }

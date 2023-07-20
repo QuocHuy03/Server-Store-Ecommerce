@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost:3306
--- Thời gian đã tạo: Th7 09, 2023 lúc 02:42 AM
--- Phiên bản máy phục vụ: 10.4.25-MariaDB
--- Phiên bản PHP: 7.4.30
+-- Thời gian đã tạo: Th7 20, 2023 lúc 03:47 PM
+-- Phiên bản máy phục vụ: 8.0.30
+-- Phiên bản PHP: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,18 +24,43 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `address`
+--
+
+CREATE TABLE `address` (
+  `id` int NOT NULL,
+  `userID` int NOT NULL,
+  `phone` int NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `district` varchar(255) NOT NULL,
+  `commune` varchar(255) NOT NULL,
+  `address` text NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `address`
+--
+
+INSERT INTO `address` (`id`, `userID`, `phone`, `city`, `district`, `commune`, `address`, `createdAt`, `updatedAt`) VALUES
+(3, 6, 934436067, 'Đà Nẵng', 'Huyện Hòa Vang', 'Xã Hòa Phước', 'Tổ 2 , Thôn còn Mong , Xã Hòa Phước', '2023-07-20 22:39:45', '2023-07-20 22:39:45');
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `categories`
 --
 
 CREATE TABLE `categories` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `nameCategory` varchar(255) NOT NULL,
   `slugCategory` varchar(255) NOT NULL,
   `outstandingCategory` varchar(255) NOT NULL,
   `statusCategory` varchar(255) NOT NULL,
-  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
-  `updatedAt` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `categories`
@@ -55,12 +80,12 @@ INSERT INTO `categories` (`id`, `nameCategory`, `slugCategory`, `outstandingCate
 --
 
 CREATE TABLE `colors` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `nameColor` varchar(255) NOT NULL,
-  `product_color_id` int(11) NOT NULL,
-  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
-  `updatedAt` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `product_color_id` int NOT NULL,
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `colors`
@@ -77,12 +102,12 @@ INSERT INTO `colors` (`id`, `nameColor`, `product_color_id`, `createdAt`, `updat
 --
 
 CREATE TABLE `images` (
-  `id` int(11) NOT NULL,
-  `product_image_id` int(11) NOT NULL,
+  `id` int NOT NULL,
+  `product_image_id` int NOT NULL,
   `image_path` varchar(255) NOT NULL,
-  `createAt` datetime NOT NULL DEFAULT current_timestamp(),
-  `updatedAt` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `createAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `images`
@@ -101,15 +126,16 @@ INSERT INTO `images` (`id`, `product_image_id`, `image_path`, `createAt`, `updat
 --
 
 CREATE TABLE `orders` (
-  `id` int(11) NOT NULL,
-  `code` int(11) NOT NULL,
-  `userID` int(11) NOT NULL,
+  `id` int NOT NULL,
+  `code` int NOT NULL,
+  `userID` int NOT NULL,
+  `addressID` int NOT NULL,
   `productOrder` varchar(255) NOT NULL,
-  `totalPrice` int(11) NOT NULL,
+  `totalPrice` int NOT NULL,
   `paymentMethod` varchar(255) NOT NULL,
-  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
-  `updatedAt` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -118,18 +144,18 @@ CREATE TABLE `orders` (
 --
 
 CREATE TABLE `products` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `slugProduct` varchar(255) NOT NULL,
   `nameProduct` varchar(255) NOT NULL,
-  `price_has_ropped` int(11) NOT NULL,
-  `categoryID` int(11) NOT NULL,
-  `initial_price` int(11) NOT NULL,
+  `price_has_ropped` int NOT NULL,
+  `categoryID` int NOT NULL,
+  `initial_price` int NOT NULL,
   `contentProduct` text NOT NULL,
   `descriptionProduct` text NOT NULL,
   `statusProduct` varchar(255) NOT NULL,
-  `createAt` datetime NOT NULL DEFAULT current_timestamp(),
-  `updatedAt` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `createAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `products`
@@ -145,28 +171,33 @@ INSERT INTO `products` (`id`, `slugProduct`, `nameProduct`, `price_has_ropped`, 
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `email` varchar(255) NOT NULL,
   `fullname` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `phone` int(11) DEFAULT NULL,
-  `address` varchar(255) DEFAULT NULL,
   `role` enum('USER','ADMIN') NOT NULL,
-  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
-  `updatedAt` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `fullname`, `username`, `password`, `phone`, `address`, `role`, `createdAt`, `updatedAt`) VALUES
-(6, 'qhuy.dev@gmail.com', 'LeQuocHuy', 'huydev', '$2b$10$bcHadi71jDQ93p5vUSITf.SFUtzDqYeMA7aa.WlwdFtLrnG10aQEa', NULL, NULL, 'ADMIN', '2023-06-27 13:59:30', '2023-06-27 13:59:30');
+INSERT INTO `users` (`id`, `email`, `fullname`, `username`, `password`, `role`, `createdAt`, `updatedAt`) VALUES
+(6, 'qhuy.dev@gmail.com', 'LeQuocHuy', 'huydev', '$2b$10$bcHadi71jDQ93p5vUSITf.SFUtzDqYeMA7aa.WlwdFtLrnG10aQEa', 'ADMIN', '2023-06-27 13:59:30', '2023-06-27 13:59:30');
 
 --
 -- Chỉ mục cho các bảng đã đổ
 --
+
+--
+-- Chỉ mục cho bảng `address`
+--
+ALTER TABLE `address`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userID` (`userID`);
 
 --
 -- Chỉ mục cho bảng `categories`
@@ -192,7 +223,9 @@ ALTER TABLE `images`
 -- Chỉ mục cho bảng `orders`
 --
 ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `addressID` (`addressID`),
+  ADD KEY `userID` (`userID`);
 
 --
 -- Chỉ mục cho bảng `products`
@@ -212,44 +245,56 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT cho bảng `address`
+--
+ALTER TABLE `address`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT cho bảng `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT cho bảng `colors`
 --
 ALTER TABLE `colors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT cho bảng `images`
 --
 ALTER TABLE `images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
 --
+
+--
+-- Các ràng buộc cho bảng `address`
+--
+ALTER TABLE `address`
+  ADD CONSTRAINT `address_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Các ràng buộc cho bảng `colors`
@@ -262,6 +307,13 @@ ALTER TABLE `colors`
 --
 ALTER TABLE `images`
   ADD CONSTRAINT `images_ibfk_1` FOREIGN KEY (`product_image_id`) REFERENCES `products` (`id`);
+
+--
+-- Các ràng buộc cho bảng `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`addressID`) REFERENCES `address` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Các ràng buộc cho bảng `products`
