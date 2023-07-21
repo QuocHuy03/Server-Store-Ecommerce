@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost:3306
--- Thời gian đã tạo: Th7 20, 2023 lúc 03:47 PM
+-- Thời gian đã tạo: Th7 21, 2023 lúc 06:44 AM
 -- Phiên bản máy phục vụ: 8.0.30
 -- Phiên bản PHP: 8.1.10
 
@@ -20,31 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `ecommerce`
 --
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `address`
---
-
-CREATE TABLE `address` (
-  `id` int NOT NULL,
-  `userID` int NOT NULL,
-  `phone` int NOT NULL,
-  `city` varchar(255) NOT NULL,
-  `district` varchar(255) NOT NULL,
-  `commune` varchar(255) NOT NULL,
-  `address` text NOT NULL,
-  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Đang đổ dữ liệu cho bảng `address`
---
-
-INSERT INTO `address` (`id`, `userID`, `phone`, `city`, `district`, `commune`, `address`, `createdAt`, `updatedAt`) VALUES
-(3, 6, 934436067, 'Đà Nẵng', 'Huyện Hòa Vang', 'Xã Hòa Phước', 'Tổ 2 , Thôn còn Mong , Xã Hòa Phước', '2023-07-20 22:39:45', '2023-07-20 22:39:45');
 
 -- --------------------------------------------------------
 
@@ -127,15 +102,39 @@ INSERT INTO `images` (`id`, `product_image_id`, `image_path`, `createAt`, `updat
 
 CREATE TABLE `orders` (
   `id` int NOT NULL,
-  `code` int NOT NULL,
+  `code` varchar(255) NOT NULL,
   `userID` int NOT NULL,
-  `addressID` int NOT NULL,
-  `productOrder` varchar(255) NOT NULL,
+  `vnpayID` int DEFAULT NULL,
+  `productOrder` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `totalPrice` int NOT NULL,
   `paymentMethod` varchar(255) NOT NULL,
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `orders`
+--
+
+INSERT INTO `orders` (`id`, `code`, `userID`, `vnpayID`, `productOrder`, `totalPrice`, `paymentMethod`, `createdAt`, `updatedAt`) VALUES
+(2, '725bd34d-c6f3-4383-8ea2-0ca1c6c137cc', 6, NULL, '[{\"id\":16,\"name\":\"ASUS ROG Strix G17 G713\",\"color\":\"black\",\"price\":46000000,\"image\":\"https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/bjunwf9kjz9a5qhbwtxw.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/d8axwyhk8htgiiiha4ph.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/h1ldbu6rirj0ghpfvj3m.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/ueeyobaolsrdqbqmnvh7.png\",\"category\":\"Asus\",\"quantity\":2}]', 91960000, 'receive', '2023-07-21 13:44:01', '2023-07-21 13:44:01');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `paymentvnpay`
+--
+
+CREATE TABLE `paymentvnpay` (
+  `id` int NOT NULL,
+  `vnp_Amount` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `vnp_BankCode` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `vnp_BankTranNo` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `vnp_CardType` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `vnp_OrderInfo` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `vnp_TransactionNo` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `vnp_TransactionStatus` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -176,6 +175,11 @@ CREATE TABLE `users` (
   `fullname` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `phone` int DEFAULT NULL,
+  `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `district` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `commune` varchar(255) DEFAULT NULL,
+  `address` text,
   `role` enum('USER','ADMIN') NOT NULL,
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -185,19 +189,12 @@ CREATE TABLE `users` (
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`id`, `email`, `fullname`, `username`, `password`, `role`, `createdAt`, `updatedAt`) VALUES
-(6, 'qhuy.dev@gmail.com', 'LeQuocHuy', 'huydev', '$2b$10$bcHadi71jDQ93p5vUSITf.SFUtzDqYeMA7aa.WlwdFtLrnG10aQEa', 'ADMIN', '2023-06-27 13:59:30', '2023-06-27 13:59:30');
+INSERT INTO `users` (`id`, `email`, `fullname`, `username`, `password`, `phone`, `city`, `district`, `commune`, `address`, `role`, `createdAt`, `updatedAt`) VALUES
+(6, 'qhuy.dev@gmail.com', 'LeQuocHuy', 'huydev', '$2b$10$bcHadi71jDQ93p5vUSITf.SFUtzDqYeMA7aa.WlwdFtLrnG10aQEa', 901961341, 'Đà Nẵng', 'Huyện Hòa Vang', 'Xã Hòa Phước', 'Tổ 2 , Thôn Cồn Mong 123', 'ADMIN', '2023-06-27 13:59:30', '2023-06-27 13:59:30');
 
 --
 -- Chỉ mục cho các bảng đã đổ
 --
-
---
--- Chỉ mục cho bảng `address`
---
-ALTER TABLE `address`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `userID` (`userID`);
 
 --
 -- Chỉ mục cho bảng `categories`
@@ -224,8 +221,14 @@ ALTER TABLE `images`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `addressID` (`addressID`),
-  ADD KEY `userID` (`userID`);
+  ADD KEY `userID` (`userID`),
+  ADD KEY `vnpayID` (`vnpayID`);
+
+--
+-- Chỉ mục cho bảng `paymentvnpay`
+--
+ALTER TABLE `paymentvnpay`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Chỉ mục cho bảng `products`
@@ -243,12 +246,6 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT cho các bảng đã đổ
 --
-
---
--- AUTO_INCREMENT cho bảng `address`
---
-ALTER TABLE `address`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `categories`
@@ -272,6 +269,12 @@ ALTER TABLE `images`
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT cho bảng `paymentvnpay`
+--
+ALTER TABLE `paymentvnpay`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
@@ -291,12 +294,6 @@ ALTER TABLE `users`
 --
 
 --
--- Các ràng buộc cho bảng `address`
---
-ALTER TABLE `address`
-  ADD CONSTRAINT `address_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
---
 -- Các ràng buộc cho bảng `colors`
 --
 ALTER TABLE `colors`
@@ -312,8 +309,8 @@ ALTER TABLE `images`
 -- Các ràng buộc cho bảng `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`addressID`) REFERENCES `address` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`vnpayID`) REFERENCES `paymentvnpay` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 --
 -- Các ràng buộc cho bảng `products`
