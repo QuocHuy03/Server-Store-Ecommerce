@@ -35,7 +35,7 @@ router.get("/getProductBySlug/:slug", productController.getProductBySlug);
 // Order
 router.put("/updateInfo/:id", userController.updateInfo);
 
-router.post("/postOrder", orderController.postOrder);
+router.post("/orderSuccess", orderController.postOrder);
 
 router.post("/apiVnpay", vnpayController.vnpayAPI);
 

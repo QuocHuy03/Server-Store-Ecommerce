@@ -1,6 +1,6 @@
 const connect = require("../config/connect.config");
 const slugify = require("slugify");
-
+const { v4: uuidv4 } = require("uuid");
 const orderModel = {
   getAllOrder: async () => {
     try {
@@ -28,8 +28,72 @@ const orderModel = {
   },
 
   createOrder: async (data) => {
+    console.log(data.data.methodPayment)
     try {
-      console.log(data);
+      const cartOrderJson = JSON.stringify(data.carts);
+
+      if (data.data.methodPayment === "vnpay") {
+        const [existingOrder] = await connect.execute(
+          "SELECT * FROM paymentvnpay WHERE vnp_TransactionNo = ?",
+          [data.vnp_TransactionNo]
+        );
+        if (existingOrder && existingOrder.length > 0) {
+          return existingOrder;
+        } else {
+          const [huyit] = await connect.execute(
+            "INSERT INTO paymentvnpay (`vnp_Amount`, `vnp_BankCode`, `vnp_BankTranNo`, `vnp_CardType`, `vnp_OrderInfo`, `vnp_TransactionNo`, `vnp_TransactionStatus`) VALUES (?,?,?,?,?,?,?,?)",
+            [
+              data.vnp_Amount,
+              data.vnp_BankCode,
+              data.vnp_BankTranNo,
+              data.vnp_CardType,
+              data.vnp_OrderInfo,
+              data.vnp_TransactionNo,
+              data.vnp_TransactionStatus,
+            ]
+          );
+
+          const [result] = await connect.execute(
+            "INSERT INTO orders (`code`,`userID`, `vnpayID`, `productOrder`, `totalPrice`, `paymentMethod`) VALUES (?,?,?,?,?,?)",
+            [
+              uuidv4(),
+              data.userID,
+              huyit.insertId,
+              cartOrderJson,
+              data.totalPrice,
+              data.data.methodPayment,
+            ]
+          );
+
+          const [insertedOrder] = await connect.execute(
+            "SELECT * FROM orders WHERE id = ?",
+            [result.insertId]
+          );
+
+          return insertedOrder;
+        }
+      } else if (data.data.methodPayment === "receive") {
+        const [result] = await connect.execute(
+          "INSERT INTO orders (`code`,`userID`, `vnpayID`, `productOrder`, `totalPrice`, `paymentMethod`) VALUES (?,?,?,?,?,?)",
+          [
+            uuidv4(),
+            data.userID,
+            0,
+            cartOrderJson,
+            data.totalPrice,
+            data.data.methodPayment,
+          ]
+        );
+
+        const [insertedOrder] = await connect.execute(
+          "SELECT * FROM orders WHERE id = ?",
+          [result.insertId]
+        );
+
+        return insertedOrder;
+      } else {
+        console.log("connect không pttt");
+      }
     } catch (error) {
       console.error("Lỗi trong quá trình truy vấn cơ sở dữ liệu:", error);
       throw error;

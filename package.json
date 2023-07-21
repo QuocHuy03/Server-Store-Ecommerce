@@ -25,6 +25,7 @@
     "mysql2-promise": "^0.1.4",
     "nodemon": "^2.0.22",
     "npm": "^9.7.2",
-    "slugify": "^1.6.6"
+    "slugify": "^1.6.6",
+    "uuid": "^9.0.0"
   }
 }
