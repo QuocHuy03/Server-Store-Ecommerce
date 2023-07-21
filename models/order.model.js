@@ -57,10 +57,10 @@ const orderModel = {
             "INSERT INTO orders (`code`,`userID`, `vnpayID`, `productOrder`, `totalPrice`, `paymentMethod`) VALUES (?,?,?,?,?,?)",
             [
               uid,
-              data.userID,
+              data.data.userID,
               huyit.insertId,
               cartOrderJson,
-              data.totalPrice,
+              data.data.totalPrice,
               data.data.methodPayment,
             ]
           );
@@ -70,7 +70,7 @@ const orderModel = {
             [result.insertId]
           );
 
-          return insertedOrder;
+          return insertedOrder[0];
         }
       } else if (data.data.methodPayment === "receive") {
         const uid = uuidv4();
@@ -90,9 +90,9 @@ const orderModel = {
           [result.insertId]
         );
 
-        return insertedOrder;
+        return insertedOrder[0];
       } else {
-        console.log("connect không pttt");
+        console.error("Lỗi không có phương phức thanh toán");
       }
     } catch (error) {
       console.error("Lỗi trong quá trình truy vấn cơ sở dữ liệu:", error);
