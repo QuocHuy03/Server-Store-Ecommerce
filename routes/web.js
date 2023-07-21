@@ -6,6 +6,7 @@ const productController = require("../controllers/product.controller");
 const orderController = require("../controllers/order.controller");
 const userController = require("../controllers/user.controller");
 const vnpayController = require("../controllers/payment.controller");
+const discountController = require("../controllers/discount.controller");
 
 const {
   verifyAccessTokenMiddleware,
@@ -41,6 +42,13 @@ router.post("/apiVnpay", vnpayController.vnpayAPI);
 
 router.get("/getAllOrders", orderController.listOrder);
 router.get("/getOrderById/:id", orderController.getOrderById);
+
+// ApplyDiscount
+
+router.post("/applyDiscount", discountController.postDiscount);
+
+router.get("/getAllDiscount", discountController.listDiscount);
+router.delete("/deleteDiscount/:id", discountController.deleteDiscountById);
 
 // Auth
 
