@@ -28,11 +28,11 @@ const orderModel = {
   },
 
   createOrder: async (data) => {
-    console.log(data.data.methodPayment)
     try {
-      const cartOrderJson = JSON.stringify(data.carts);
+      const cartOrderJson = JSON.stringify(data.data.carts);
 
       if (data.data.methodPayment === "vnpay") {
+        const uid = uuidv4();
         const [existingOrder] = await connect.execute(
           "SELECT * FROM paymentvnpay WHERE vnp_TransactionNo = ?",
           [data.vnp_TransactionNo]
@@ -41,7 +41,7 @@ const orderModel = {
           return existingOrder;
         } else {
           const [huyit] = await connect.execute(
-            "INSERT INTO paymentvnpay (`vnp_Amount`, `vnp_BankCode`, `vnp_BankTranNo`, `vnp_CardType`, `vnp_OrderInfo`, `vnp_TransactionNo`, `vnp_TransactionStatus`) VALUES (?,?,?,?,?,?,?,?)",
+            "INSERT INTO paymentvnpay (`vnp_Amount`, `vnp_BankCode`, `vnp_BankTranNo`, `vnp_CardType`, `vnp_OrderInfo`, `vnp_TransactionNo`, `vnp_TransactionStatus`) VALUES (?,?,?,?,?,?,?)",
             [
               data.vnp_Amount,
               data.vnp_BankCode,
@@ -56,7 +56,7 @@ const orderModel = {
           const [result] = await connect.execute(
             "INSERT INTO orders (`code`,`userID`, `vnpayID`, `productOrder`, `totalPrice`, `paymentMethod`) VALUES (?,?,?,?,?,?)",
             [
-              uuidv4(),
+              uid,
               data.userID,
               huyit.insertId,
               cartOrderJson,
@@ -73,14 +73,14 @@ const orderModel = {
           return insertedOrder;
         }
       } else if (data.data.methodPayment === "receive") {
+        const uid = uuidv4();
         const [result] = await connect.execute(
-          "INSERT INTO orders (`code`,`userID`, `vnpayID`, `productOrder`, `totalPrice`, `paymentMethod`) VALUES (?,?,?,?,?,?)",
+          "INSERT INTO orders (`code`,`userID`, `productOrder`, `totalPrice`, `paymentMethod`) VALUES (?,?,?,?,?)",
           [
-            uuidv4(),
-            data.userID,
-            0,
+            uid,
+            data.data.userID,
             cartOrderJson,
-            data.totalPrice,
+            data.data.totalPrice,
             data.data.methodPayment,
           ]
         );
