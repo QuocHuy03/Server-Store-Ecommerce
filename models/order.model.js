@@ -35,7 +35,7 @@ const orderModel = {
         const uid = uuidv4();
         const [existingOrder] = await connect.execute(
           "SELECT * FROM paymentvnpay WHERE vnp_TransactionNo = ?",
-          [data.vnp_TransactionNo]
+          [data.data.paymentVnpay.vnp_TransactionNo]
         );
         if (existingOrder && existingOrder.length > 0) {
           return existingOrder;
@@ -43,13 +43,13 @@ const orderModel = {
           const [huyit] = await connect.execute(
             "INSERT INTO paymentvnpay (`vnp_Amount`, `vnp_BankCode`, `vnp_BankTranNo`, `vnp_CardType`, `vnp_OrderInfo`, `vnp_TransactionNo`, `vnp_TransactionStatus`) VALUES (?,?,?,?,?,?,?)",
             [
-              data.vnp_Amount,
-              data.vnp_BankCode,
-              data.vnp_BankTranNo,
-              data.vnp_CardType,
-              data.vnp_OrderInfo,
-              data.vnp_TransactionNo,
-              data.vnp_TransactionStatus,
+              data.data.paymentVnpay.vnp_Amount,
+              data.data.paymentVnpay.vnp_BankCode,
+              data.data.paymentVnpay.vnp_BankTranNo,
+              data.data.paymentVnpay.vnp_CardType,
+              data.data.paymentVnpay.vnp_OrderInfo,
+              data.data.paymentVnpay.vnp_TransactionNo,
+              data.data.paymentVnpay.vnp_TransactionStatus,
             ]
           );
 
