@@ -23,7 +23,17 @@ exports.postDiscount = async (req, res, next) => {
         .json({ status: false, message: "Mã giảm giá đã tồn tại!" });
     }
 
-    await discountModel.createDiscount(req.body);
+    const result = await discountModel.createDiscount(req.body);
+
+    if (result) {
+      return res.status(200).json({
+        status: true,
+        message: "Áp Dụng Mã Giảm Giá Thành Công",
+        result,
+      });
+    } else {
+      next();
+    }
   } catch (error) {
     console.error(error);
     return res
