@@ -41,7 +41,7 @@ const orderModel = {
           return existingOrder;
         } else {
           const [huyit] = await connect.execute(
-            "INSERT INTO paymentvnpay (`vnp_Amount`, `vnp_BankCode`, `vnp_BankTranNo`, `vnp_CardType`, `vnp_OrderInfo`, `vnp_TransactionNo`, `vnp_TransactionStatus`) VALUES (?,?,?,?,?,?,?)",
+            "INSERT INTO paymentvnpay (`vnp_Amount`, `vnp_BankCode`, `vnp_BankTranNo`, `vnp_CardType`, `vnp_OrderInfo`, `vnp_TransactionNo`) VALUES (?,?,?,?,?,?)",
             [
               data.data.paymentVnpay.vnp_Amount,
               data.data.paymentVnpay.vnp_BankCode,
@@ -49,7 +49,6 @@ const orderModel = {
               data.data.paymentVnpay.vnp_CardType,
               data.data.paymentVnpay.vnp_OrderInfo,
               data.data.paymentVnpay.vnp_TransactionNo,
-              data.data.paymentVnpay.vnp_TransactionStatus,
             ]
           );
 
