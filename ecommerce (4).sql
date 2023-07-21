@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: localhost:3306
--- Thời gian đã tạo: Th7 21, 2023 lúc 06:44 AM
+-- Thời gian đã tạo: Th7 21, 2023 lúc 11:33 AM
 -- Phiên bản máy phục vụ: 8.0.30
 -- Phiên bản PHP: 8.1.10
 
@@ -117,7 +117,13 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `code`, `userID`, `vnpayID`, `productOrder`, `totalPrice`, `paymentMethod`, `createdAt`, `updatedAt`) VALUES
-(2, '725bd34d-c6f3-4383-8ea2-0ca1c6c137cc', 6, NULL, '[{\"id\":16,\"name\":\"ASUS ROG Strix G17 G713\",\"color\":\"black\",\"price\":46000000,\"image\":\"https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/bjunwf9kjz9a5qhbwtxw.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/d8axwyhk8htgiiiha4ph.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/h1ldbu6rirj0ghpfvj3m.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/ueeyobaolsrdqbqmnvh7.png\",\"category\":\"Asus\",\"quantity\":2}]', 91960000, 'receive', '2023-07-21 13:44:01', '2023-07-21 13:44:01');
+(35, '9f6c1776-4cac-4495-afcf-1eea00ab90b3', 6, NULL, '[{\"id\":16,\"name\":\"ASUS ROG Strix G17 G713\",\"color\":\"black\",\"price\":46000000,\"image\":\"https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/bjunwf9kjz9a5qhbwtxw.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/d8axwyhk8htgiiiha4ph.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/h1ldbu6rirj0ghpfvj3m.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/ueeyobaolsrdqbqmnvh7.png\",\"category\":\"Asus\",\"quantity\":1}]', 45960000, 'receive', '2023-07-21 17:49:32', '2023-07-21 17:49:32'),
+(36, '5d0e2e6d-d0de-4523-84fd-d13c4d308b02', 6, 1, '[{\"id\":16,\"name\":\"ASUS ROG Strix G17 G713\",\"color\":\"black\",\"price\":46000000,\"image\":\"https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/bjunwf9kjz9a5qhbwtxw.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/d8axwyhk8htgiiiha4ph.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/h1ldbu6rirj0ghpfvj3m.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/ueeyobaolsrdqbqmnvh7.png\",\"category\":\"Asus\",\"quantity\":1}]', 45960000, 'vnpay', '2023-07-21 18:00:37', '2023-07-21 18:00:37'),
+(37, 'd274742a-6a08-4551-b72c-5b7e6caa0ac4', 6, NULL, '[{\"id\":16,\"name\":\"ASUS ROG Strix G17 G713\",\"color\":\"black\",\"price\":46000000,\"image\":\"https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/bjunwf9kjz9a5qhbwtxw.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/d8axwyhk8htgiiiha4ph.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/h1ldbu6rirj0ghpfvj3m.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/ueeyobaolsrdqbqmnvh7.png\",\"category\":\"Asus\",\"quantity\":1}]', 45960000, 'receive', '2023-07-21 18:02:38', '2023-07-21 18:02:38'),
+(38, '8d280382-58de-443f-be83-2e216fc6c639', 6, 2, '[{\"id\":16,\"name\":\"ASUS ROG Strix G17 G713\",\"color\":\"black\",\"price\":46000000,\"image\":\"https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/bjunwf9kjz9a5qhbwtxw.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/d8axwyhk8htgiiiha4ph.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/h1ldbu6rirj0ghpfvj3m.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/ueeyobaolsrdqbqmnvh7.png\",\"category\":\"Asus\",\"quantity\":1}]', 45960000, 'vnpay', '2023-07-21 18:26:25', '2023-07-21 18:26:25'),
+(39, '0236a80a-1812-4e15-a86e-24b95d427c48', 6, NULL, '[{\"id\":16,\"name\":\"ASUS ROG Strix G17 G713\",\"color\":\"black\",\"price\":46000000,\"image\":\"https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/bjunwf9kjz9a5qhbwtxw.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/d8axwyhk8htgiiiha4ph.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/h1ldbu6rirj0ghpfvj3m.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/ueeyobaolsrdqbqmnvh7.png\",\"category\":\"Asus\",\"quantity\":1}]', 45960000, 'receive', '2023-07-21 18:31:01', '2023-07-21 18:31:01'),
+(41, 'e347dd79-f113-44e9-be3c-0176563623d2', 6, NULL, '[{\"id\":16,\"name\":\"ASUS ROG Strix G17 G713\",\"color\":\"black\",\"price\":46000000,\"image\":\"https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/bjunwf9kjz9a5qhbwtxw.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/d8axwyhk8htgiiiha4ph.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/h1ldbu6rirj0ghpfvj3m.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/ueeyobaolsrdqbqmnvh7.png\",\"category\":\"Asus\",\"quantity\":1}]', 45960000, 'receive', '2023-07-21 18:32:47', '2023-07-21 18:32:47'),
+(42, 'ac2e5b66-d36a-499a-bc54-9883cadee2ea', 6, NULL, '[{\"id\":16,\"name\":\"ASUS ROG Strix G17 G713\",\"color\":\"black\",\"price\":46000000,\"image\":\"https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/bjunwf9kjz9a5qhbwtxw.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/d8axwyhk8htgiiiha4ph.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/h1ldbu6rirj0ghpfvj3m.png,https://res.cloudinary.com/djy3vgwfi/image/upload/v1688834137/ueeyobaolsrdqbqmnvh7.png\",\"category\":\"Asus\",\"quantity\":1}]', 45960000, 'receive', '2023-07-21 18:33:03', '2023-07-21 18:33:03');
 
 -- --------------------------------------------------------
 
@@ -132,9 +138,16 @@ CREATE TABLE `paymentvnpay` (
   `vnp_BankTranNo` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `vnp_CardType` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `vnp_OrderInfo` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `vnp_TransactionNo` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `vnp_TransactionStatus` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+  `vnp_TransactionNo` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `paymentvnpay`
+--
+
+INSERT INTO `paymentvnpay` (`id`, `vnp_Amount`, `vnp_BankCode`, `vnp_BankTranNo`, `vnp_CardType`, `vnp_OrderInfo`, `vnp_TransactionNo`) VALUES
+(1, '4596000000', 'NCB', 'VNP14072936', 'ATM', 'Thanh toan cho ma GD:21175728', '14072936'),
+(2, '4596000000', 'NCB', 'VNP14072956', 'ATM', 'Thanh toan cho ma GD:21182521', '14072956');
 
 -- --------------------------------------------------------
 
@@ -269,13 +282,13 @@ ALTER TABLE `images`
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT cho bảng `paymentvnpay`
 --
 ALTER TABLE `paymentvnpay`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
