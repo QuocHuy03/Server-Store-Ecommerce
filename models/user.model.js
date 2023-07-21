@@ -52,33 +52,53 @@ const userModel = {
     }
   },
 
-  updateUser: async (id, data) => {
+  updateInfo: async (id, data) => {
     try {
-      const [existingUser] = await connect.execute(
+      const [existingRecord] = await connect.execute(
         "SELECT * FROM users WHERE id = ?",
         [id]
       );
+      const existingData = existingRecord[0];
 
-      if (existingUser.length === 0) {
-        throw new Error("User not found");
+      const hasChanged =
+        existingData.phone !== data.phone ||
+        existingData.city !== data.city ||
+        existingData.district !== data.district ||
+        existingData.commune !== data.commune ||
+        existingData.address !== data.address;
+
+      if (hasChanged) {
+        const [result] = await connect.execute(
+          "UPDATE users SET phone = ?, city = ?, district = ?, commune = ?, address = ? WHERE id = ?",
+          [
+            data.phone,
+            data.city,
+            data.district,
+            data.commune,
+            data.address,
+            id,
+          ]
+        );
+
+        if (result.affectedRows === 1) {
+          const [updatedUser] = await connect.execute(
+            "SELECT * FROM users WHERE id = ?",
+            [id]
+          );
+
+          if (updatedUser.length === 1) {
+            return updatedUser[0];
+          } else {
+            throw new Error(
+              "User not found or multiple users affected by update."
+            );
+          }
+        } else {
+          throw new Error("User not found.");
+        }
       }
-
-      await connect.execute(
-        "UPDATE `users` SET `role` = ? WHERE id = ?",
-        [
-          data.role,
-          id,
-        ]
-      );
-
-      const [updatedUser] = await connect.execute(
-        "SELECT * FROM users WHERE id = ?",
-        [id]
-      );
-
-      return updatedUser;
     } catch (error) {
-      console.error("Lỗi trong quá trình truy vấn cơ sở dữ liệu:", error);
+      console.error("Error during user information update:", error);
       throw error;
     }
   },

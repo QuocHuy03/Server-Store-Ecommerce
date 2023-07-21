@@ -5,6 +5,8 @@ const categoryController = require("../controllers/category.controller");
 const productController = require("../controllers/product.controller");
 const orderController = require("../controllers/order.controller");
 const userController = require("../controllers/user.controller");
+const vnpayController = require("../controllers/payment.controller");
+
 const {
   verifyAccessTokenMiddleware,
 } = require("../middlewares/verifyAccessToken");
@@ -31,20 +33,14 @@ router.get("/getProductOfCategory/:id", productController.getProductOfCategory);
 router.get("/getProductBySlug/:slug", productController.getProductBySlug);
 
 // Order
+router.put("/updateInfo/:id", userController.updateInfo);
 
-router.post(
-  "/postOrder",
-  orderController.postOrder
-);
+router.post("/postOrder", orderController.postOrder);
 
-router.get(
-  "/getAllOrders",
-  orderController.listOrder
-);
-router.get(
-  "/getOrderById/:id",
-  orderController.getOrderById
-);
+router.post("/apiVnpay", vnpayController.vnpayAPI);
+
+router.get("/getAllOrders", orderController.listOrder);
+router.get("/getOrderById/:id", orderController.getOrderById);
 
 // Auth
 

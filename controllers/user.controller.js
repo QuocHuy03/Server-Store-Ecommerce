@@ -54,3 +54,17 @@ exports.deleteUserById = (req, res, next) => {
         .json({ status: false, message: "Delete Order Thất Bại" });
     });
 };
+
+exports.updateInfo = (req, res, next) => {
+  userModel
+    .updateInfo(req.params.id, req.body.data)
+    .then((data) => {
+      return res.status(200).json(data);
+    })
+    .catch((error) => {
+      console.error(error);
+      return res
+        .status(500)
+        .json({ status: false, message: "Update User Thất Bại" });
+    });
+};
