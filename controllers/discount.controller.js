@@ -11,6 +11,18 @@ exports.listDiscount = (req, res, next) => {
     });
 };
 
+exports.getDiscountById = (req, res, next) => {
+  const id = req.params.id;
+  discountModel
+    .getDiscountById(id)
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 exports.postDiscount = async (req, res, next) => {
   try {
     const existingDiscount = await discountModel.checkDuplicateDiscount(

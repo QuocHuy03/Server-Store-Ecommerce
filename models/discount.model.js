@@ -12,7 +12,18 @@ const discountModel = {
       throw error;
     }
   },
-
+  getDiscountById: async (id) => {
+    try {
+      const [data] = await connect.execute(
+        "SELECT * FROM `discounts` WHERE userID = ?",
+        [id]
+      );
+      return data[0];
+    } catch (error) {
+      console.error("Lỗi trong quá trình truy vấn cơ sở dữ liệu:", error);
+      throw error;
+    }
+  },
   createDiscount: async (data) => {
     try {
       const [result] = await connect.execute(

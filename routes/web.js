@@ -38,6 +38,8 @@ router.put("/updateInfo/:id", userController.updateInfo);
 
 router.post("/orderSuccess", orderController.postOrder);
 
+router.get("/getOrderById/:id", orderController.getOrderById);
+
 router.post("/apiVnpay", vnpayController.vnpayAPI);
 
 router.get("/getAllOrders", orderController.listOrder);
@@ -48,6 +50,8 @@ router.get("/getOrderById/:id", orderController.getOrderById);
 router.post("/applyDiscount", discountController.postDiscount);
 
 router.get("/getAllDiscount", discountController.listDiscount);
+router.get("/getDiscountById/:id", discountController.getDiscountById);
+
 router.delete("/deleteDiscount/:id", discountController.deleteDiscountById);
 
 // Auth

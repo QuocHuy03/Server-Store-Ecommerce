@@ -17,10 +17,10 @@ const orderModel = {
   getOrderById: async (order) => {
     try {
       const [data] = await connect.execute(
-        "SELECT * FROM `orders` WHERE id = ?",
+        "SELECT * FROM `orders` WHERE userID = ?",
         [order]
       );
-      return data[0];
+      return data;
     } catch (error) {
       console.error("Lỗi trong quá trình truy vấn cơ sở dữ liệu:", error);
       throw error;
