@@ -53,7 +53,7 @@ const orderModel = {
           );
 
           const [result] = await connect.execute(
-            "INSERT INTO orders (`code`,`userID`, `vnpayID`, `productOrder`, `totalPrice`, `paymentMethod`) VALUES (?,?,?,?,?,?)",
+            "INSERT INTO orders (`code`,`userID`, `vnpayID`, `productOrder`, `totalPrice`, `paymentMethod`, `status`) VALUES (?,?,?,?,?,?,?)",
             [
               uid,
               data.data.userID,
@@ -61,6 +61,7 @@ const orderModel = {
               cartOrderJson,
               data.data.totalPrice,
               data.data.methodPayment,
+              "Đã Thanh Toán",
             ]
           );
 
@@ -74,13 +75,14 @@ const orderModel = {
       } else if (data.data.methodPayment === "receive") {
         const uid = uuidv4();
         const [result] = await connect.execute(
-          "INSERT INTO orders (`code`,`userID`, `productOrder`, `totalPrice`, `paymentMethod`) VALUES (?,?,?,?,?)",
+          "INSERT INTO orders (`code`,`userID`, `productOrder`, `totalPrice`, `paymentMethod`, `status`) VALUES (?,?,?,?,?,?)",
           [
             uid,
             data.data.userID,
             cartOrderJson,
             data.data.totalPrice,
             data.data.methodPayment,
+            "Chưa Thanh Toán",
           ]
         );
 
