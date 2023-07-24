@@ -35,6 +35,8 @@ router.get("/getProductBySlug/:slug", productController.getProductBySlug);
 
 // Order
 router.put("/updateInfo/:id", userController.updateInfo);
+router.put("/updateStatus/:id", orderController.updateStatus);
+router.get("/getOrderByCode/:code", orderController.getOrderByCode);
 
 router.post("/orderSuccess", orderController.postOrder);
 

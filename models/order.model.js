@@ -27,6 +27,19 @@ const orderModel = {
     }
   },
 
+  getOrderByCode: async (code) => {
+    try {
+      const [data] = await connect.execute(
+        "SELECT * FROM `orders` WHERE code = ?",
+        [code]
+      );
+      return data;
+    } catch (error) {
+      console.error("Lỗi trong quá trình truy vấn cơ sở dữ liệu:", error);
+      throw error;
+    }
+  },
+
   createOrder: async (data) => {
     try {
       const cartOrderJson = JSON.stringify(data.data.carts);
@@ -102,6 +115,7 @@ const orderModel = {
   },
 
   updateStatus: async (id, data) => {
+    console.log(data);
     try {
       const [existingOrder] = await connect.execute(
         "SELECT * FROM orders WHERE id = ?",
@@ -112,7 +126,7 @@ const orderModel = {
         throw new Error("Order not found");
       }
 
-      await connect.execute("UPDATE `order` SET `status` = ?", [data.status]);
+      await connect.execute("UPDATE `orders` SET `status` = ?", [data]);
 
       const [updatedOrder] = await connect.execute(
         "SELECT * FROM orders WHERE id = ?",

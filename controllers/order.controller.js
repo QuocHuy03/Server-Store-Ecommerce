@@ -23,6 +23,18 @@ exports.getOrderById = (req, res, next) => {
     });
 };
 
+exports.getOrderByCode = (req, res, next) => {
+  const code = req.params.code;
+  orderModel
+    .getOrderByCode(code)
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 exports.postOrder = async (req, res, next) => {
   try {
     const result = await orderModel.createOrder(req.body);
@@ -43,8 +55,9 @@ exports.postOrder = async (req, res, next) => {
 };
 
 exports.updateStatus = (req, res, next) => {
+  console.log(req.body.data)
   orderModel
-    .updateStatus(req.params.id, req.body.data)
+    .updateStatus(req.params.id, req.body.data.data)
     .then((data) => {
       return res
         .status(200)
