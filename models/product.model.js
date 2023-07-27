@@ -1,6 +1,5 @@
 const connect = require("../config/connect.config");
 const slugify = require("slugify");
-const { escape } = require("mysql2");
 
 const productModel = {
   getAllProduct: async () => {
@@ -18,15 +17,34 @@ const productModel = {
 
   getSearchProduct: async (label) => {
     try {
-      const sql = `SELECT p.id, p.nameProduct, p.slugProduct, p.price_has_ropped, p.categoryID, p.initial_price, p.contentProduct, p.descriptionProduct, p.statusProduct, p.createAt, p.updatedAt, GROUP_CONCAT(DISTINCT i.image_path) AS imagePaths, GROUP_CONCAT(DISTINCT pc.nameColor) AS nameColors, cat.nameCategory 
-        FROM products AS p 
-        LEFT JOIN images AS i ON p.id = i.product_image_id 
-        LEFT JOIN colors AS pc ON p.id = pc.product_color_id 
-        LEFT JOIN categories AS cat ON p.categoryID = cat.id 
-        WHERE p.nameProduct REGEXP ?
-        GROUP BY p.id`;
+      const escapedLabel = escape(label);
+      const regexPattern = `^${escapedLabel}`;
+      console.log(regexPattern);
+      const sql = `
+      SELECT
+      p.id,
+      p.nameProduct,
+      p.slugProduct,
+      p.price_has_ropped,
+      p.categoryID,
+      p.initial_price,
+      p.contentProduct,
+      p.descriptionProduct,
+      p.statusProduct,
+      p.createAt,
+      p.updatedAt,
+      GROUP_CONCAT(DISTINCT i.image_path) AS imagePaths,
+      GROUP_CONCAT(DISTINCT pc.nameColor) AS nameColors,
+      cat.nameCategory
+    FROM products AS p
+    LEFT JOIN images AS i ON p.id = i.product_image_id
+    LEFT JOIN colors AS pc ON p.id = pc.product_color_id
+    LEFT JOIN categories AS cat ON p.categoryID = cat.id
+    WHERE p.nameProduct REGEXP ?
+    GROUP BY p.id`;
 
-      const [productData] = await connect.execute(sql, [`^${label}`]);
+      const [productData] = await connect.execute(sql, [regexPattern]);
+      console.log(productData);
       return productData;
     } catch (error) {
       console.error("Lỗi trong quá trình truy vấn cơ sở dữ liệu:", error);
