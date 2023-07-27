@@ -20,6 +20,11 @@ exports.listProduct = (req, res, next) => {
       .catch((error) => {
         console.error(error);
       });
+  } else if (req.query.filter) {
+    const label = req.query.filter[0];
+    productModel.getSearchProduct(label).then((data) => {
+      res.status(200).json(data);
+    });
   } else {
     productModel
       .getAllProduct()
