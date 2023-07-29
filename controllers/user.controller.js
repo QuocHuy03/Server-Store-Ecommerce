@@ -24,6 +24,7 @@ exports.getUserById = (req, res, next) => {
 };
 
 exports.updateUser = (req, res, next) => {
+  console.log(req.body);
   userModel
     .updateUser(req.params.id, req.body.data)
     .then((data) => {
