@@ -52,6 +52,37 @@ const userModel = {
     }
   },
 
+  updateUser: async(id, data) => {
+    console.log(id,data);
+    try {
+      const [existingRecord] = await connect.execute(
+        "SELECT * FROM users WHERE id = ?",
+        [id]
+      );
+      if (existingRecord.length === 0) {
+        throw new Error("User not found");
+      }
+      
+      await connect.execute(
+      "UPDATE users SET role = ? WHERE id = ?",
+          [
+            data.role,
+            id,
+          ]
+      );
+
+      const [updatedUser] = await connect.execute(
+        "SELECT * FROM users WHERE id = ?",
+        [id]
+      );
+
+      return updatedUser;
+    } catch (error) {
+      console.error("Error during user information update:", error);
+      throw error;
+    }
+  }
+
   updateInfo: async (id, data) => {
     try {
       const [existingRecord] = await connect.execute(
