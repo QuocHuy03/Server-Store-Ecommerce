@@ -81,7 +81,7 @@ const userModel = {
       console.error("Error during user information update:", error);
       throw error;
     }
-  }
+  },
 
   updateInfo: async (id, data) => {
     try {
