@@ -77,7 +77,7 @@ const categoryModel = {
     }
   },
 
-  updateCategory: async (slug, data) => {
+  updateCategory: async (slug, isEdit,data) => {
     try {
       const [existingCategory] = await connect.execute(
         "SELECT * FROM categories WHERE slugCategory = ?",
@@ -98,6 +98,20 @@ const categoryModel = {
           slug,
         ]
       );
+
+        if (isEdit === "false") {
+          await connect.execute(
+            "UPDATE `categories` SET `nameCategory` = ?, `imageCategory` = ?, `slugCategory` = ? , `outstandingCategory` = ? ,`statusCategory` = ? WHERE slugCategory = ?",
+            [
+              data.nameCategory,
+              data.imageCategory,
+              slugify(data.nameCategory, { lower: true }),
+              data.outstandingCategory,
+              data.statusCategory,
+              slug,
+            ]
+          );
+        }
 
       const [updatedCategory] = await connect.execute(
         "SELECT * FROM categories WHERE slugCategory = ?",
