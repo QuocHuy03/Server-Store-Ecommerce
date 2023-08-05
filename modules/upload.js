@@ -25,7 +25,7 @@ const storage = new CloudinaryStorage({
 
 const uploadCloud = multer({ storage });
 
-router.post("/", uploadCloud.array("file[]"), async (req, res, next) => {
+router.post("/much", uploadCloud.array("file[]"), async (req, res, next) => {
   try {
     if (!req.files || req.files.length === 0) {
       throw new Error("No files uploaded!");
@@ -43,5 +43,19 @@ router.post("/", uploadCloud.array("file[]"), async (req, res, next) => {
     next(err);
   }
 });
+
+router.post("/one", uploadCloud.single("file"), async (req, res, next) => {
+  try {
+    if (!req.file) {
+      throw new Error("No file uploaded!");
+    }
+
+    const result = await cloudinary.uploader.upload(req.file.path);
+    res.json({ secure_url: result.secure_url });
+  } catch (err) {
+    next(err);
+  }
+});
+
 
 module.exports = router;
