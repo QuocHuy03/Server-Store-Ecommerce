@@ -43,9 +43,10 @@ const categoryModel = {
   createCategory: async (cateData) => {
     try {
       const [result] = await connect.execute(
-        "INSERT INTO categories (`nameCategory`,`slugCategory`,`outstandingCategory`,`statusCategory`) VALUES (?,?,?,?)",
+        "INSERT INTO categories (`nameCategory`,`imageCategory`,`slugCategory`,`outstandingCategory`,`statusCategory`) VALUES (?,?,?,?,?)",
         [
           cateData.nameCategory,
+          cateData.imageCategory,
           slugify(cateData.nameCategory, { lower: true }),
           cateData.outstandingCategory,
           cateData.statusCategory,
