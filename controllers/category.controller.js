@@ -87,7 +87,7 @@ exports.addCategory = async (req, res, next) => {
 
 exports.updateCategory = (req, res, next) => {
   categoryModel
-    .updateCategory(req.params.slug, req.body.data)
+    .updateCategory(req.params.slug, req.query.isEdit,req.body.data)
     .then((data) => {
       return res
         .status(200)
